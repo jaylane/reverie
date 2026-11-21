@@ -11,5 +11,13 @@
     ],
     "js": ["src/stremio-link.js", "src/content.js"],
     "run_at": "document_idle"
+  }],
+  "web_accessible_resources": [{
+    "resources": ["icons/stremio-64.png"],
+    "matches": [
+      "https://www.imdb.com/*",
+      "https://www.rottentomatoes.com/*",
+      "https://www.themoviedb.org/*"
+    ]
   }]
 }

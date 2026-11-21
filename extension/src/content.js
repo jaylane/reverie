@@ -22,15 +22,24 @@ if (extractFilm(readPage())) {
       :host([data-floating]) { position: fixed; right: 24px; bottom: 24px; z-index: 2147483647; }
       :host(:not([data-floating])) button { margin-inline-start: 16px; }
       button {
-        padding: 10px 18px; border: 0; border-radius: 999px;
-        background: #7b5bf5; color: #fff; cursor: pointer;
-        font: 600 15px/1 system-ui, sans-serif; letter-spacing: normal; text-transform: none;
-        box-shadow: 0 2px 8px rgb(0 0 0 / 0.3);
+        position: relative; display: block; width: 44px; height: 44px;
+        padding: 0; border: 0; border-radius: 10px; background: none; cursor: pointer;
       }
-      button:hover { background: #6847e8; }
+      img { display: block; width: 100%; height: 100%; transition: transform 0.12s; }
+      button:hover img { transform: scale(1.08); }
       button:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+      /* Instant tooltip: the native title tooltip waits about a second. */
+      button::after {
+        content: attr(aria-label); position: absolute; z-index: 2147483647;
+        top: calc(100% + 6px); left: 50%; transform: translateX(-50%);
+        padding: 6px 10px; border-radius: 6px; background: #111; color: #fff; white-space: nowrap;
+        font: 500 13px/1.2 system-ui, sans-serif; letter-spacing: normal; text-transform: none;
+        opacity: 0; pointer-events: none; transition: opacity 0.12s;
+      }
+      button:hover::after, button:focus-visible::after { opacity: 1; }
+      :host([data-floating]) button::after { top: auto; bottom: calc(100% + 6px); left: auto; right: 0; transform: none; }
     </style>
-    <button type="button">Stream it</button>`;
+    <button type="button" aria-label="Stream it with Stremio"><img src="${chrome.runtime.getURL('icons/stremio-64.png')}" alt=""></button>`;
 
   const place = () => {
     const title = document.querySelector(TITLE);
