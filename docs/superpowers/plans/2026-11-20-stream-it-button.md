@@ -102,7 +102,7 @@ git commit -m "chore: scaffold reverie extension"
 
 **Interfaces:**
 - Produces:
-  - `PageData = { url: string, jsonLd: string[], imdbHrefs: string[], ogTitle: string|null }`. Here `jsonLd` holds the raw text of each `script[type="application/ld+json"]`, and `imdbHrefs` holds the `href` of each `a[href*="imdb.com/title/tt"]`.
+  - `PageData = { url: string, jsonLd: string[], imdbHrefs: string[], ogTitle: string|null, docTitle: string }`. Here `jsonLd` holds the raw text of each `script[type="application/ld+json"]`, and `imdbHrefs` holds the `href` of each `a[href*="imdb.com/title/tt"]`.
   - `Film = { type: 'movie'|'series', imdbId: string|null, title: string|null }`
   - `extractFilm(page: PageData) -> Film|null`. Returns null when neither an id nor a title is found.
   - `stremioUrl(film: Film) -> string`
@@ -269,6 +269,9 @@ Expected: no errors badge on the card.
 | `https://www.themoviedb.org/movie/603-the-matrix` | The Matrix detail |
 | `https://www.rottentomatoes.com/m/the_matrix` | search results for "The Matrix" |
 | `https://www.imdb.com/` (not a title page) | no button rendered |
+| `https://www.imdb.com/title/tt0959621/` (episode) | no button rendered |
+| IMDb title page → click a cast member (client-side jump to `/name/…`) → click Stream it | button disappears, Stremio not opened |
+| IMDb search for "Heat", click the result (may be a client-side jump into `/title/…`) | button present; if missing until reload, file follow-up F8 |
 
 The first click shows Chrome's "Open Stremio?" prompt. Tick "Always allow" per site.
 Then quit Stremio, rename `/Applications/Stremio.app`, click the button, and record what Chrome does. This feeds follow-up F2. Rename the app back afterwards.
@@ -297,4 +300,5 @@ git commit -m "feat: render Stream it button on IMDb, RT and TMDB film pages"
 | F4 | **More sites (Letterboxd, Metacritic, Trakt).** Add `matches` and QA rows. Letterboxd exposes IMDb links, so `imdbHrefs` covers it. "Any site" is opt-in `optional_host_permissions` plus `chrome.scripting.registerContentScripts`. | Each site is one QA row. "Any site" needs a permission UX. |
 | F5 | **TV on RT and TMDB** (`/tv/*`). Add the matches. Type detection already reads `TVSeries` JSON-LD. | The request scoped to films. |
 | F6 | **Inline placement** next to each site's title or watchlist button instead of floating. | Per-site selectors break on redesigns. A floating button never does. |
+| F8 | **IMDb client-side entry to title pages.** Match `https://www.imdb.com/*` and show or hide the button as the URL gains or loses a `tt` id. | Unverified whether IMDb routes into title pages client-side; QA row decides. |
 | F7 | **Icons and Chrome Web Store** listing, with `CHROMEWEBSTORE.md`. | Only after the button proves useful locally. |
