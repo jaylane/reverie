@@ -17,14 +17,17 @@ if (extractFilm(readPage())) {
   const root = host.attachShadow({ mode: 'closed' });
   root.innerHTML = `
     <style>
-      /* Spacing sits on the button: Rotten Tomatoes' ::slotted rules outrank :host margins. */
-      :host { display: inline-block; vertical-align: middle; }
+      /* Spacing and alignment sit on the button: Rotten Tomatoes' ::slotted rules outrank :host margin and vertical-align. */
+      :host { display: inline-block; }
       :host([data-floating]) { position: fixed; right: 24px; bottom: 24px; z-index: 2147483647; }
       :host(:not([data-floating])) button { margin-inline-start: 16px; }
       button {
-        position: relative; display: block; width: 44px; height: 44px;
-        padding: 0; border: 0; border-radius: 10px; background: none; cursor: pointer;
+        /* The host's bottom sits on the title baseline; shift the 32px icon so its centre meets the text's (about 0.35em up). */
+        position: relative; top: calc(16px - 0.35em); font-size: inherit;
+        display: block; width: 32px; height: 32px;
+        padding: 0; border: 0; border-radius: 8px; background: none; cursor: pointer;
       }
+      :host([data-floating]) button { top: 0; }
       img { display: block; width: 100%; height: 100%; transition: transform 0.12s; }
       button:hover img { transform: scale(1.08); }
       button:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
