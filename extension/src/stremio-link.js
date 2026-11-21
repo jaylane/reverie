@@ -26,15 +26,34 @@ function firstImdbId(candidates) {
   return null;
 }
 
+function nodeImdbId(node) {
+  return firstImdbId([].concat(node.url, node.sameAs));
+}
+
+function isFilm(node) {
+  return hasType(node, 'Movie') || hasType(node, 'TVSeries');
+}
+
 function extractFilm(page) {
   const nodes = ldNodes(page.jsonLd);
-  const node = nodes.find((n) => hasType(n, 'Movie') || hasType(n, 'TVSeries'));
-  // The URL goes first: IMDb navigates client-side and leaves the previous title's JSON-LD behind.
-  const imdbId = firstImdbId([page.url, ...(node ? [].concat(node.url, node.sameAs) : []), ...page.imdbHrefs]);
+  const urlId = firstImdbId([page.url]);
+  if (!urlId && /^https?:\/\/[^/]*imdb\.com\//.test(page.url)) return null;
+
+  let node;
+  if (urlId) {
+    // IMDb navigates client-side and leaves the previous title's JSON-LD behind, so only trust a node for this id.
+    node = nodes.find((n) => nodeImdbId(n) === urlId);
+    if (node && !isFilm(node)) return null; // episodes and games have no Stremio page under their own id
+  } else {
+    node = nodes.find(isFilm);
+  }
+
+  const imdbId = urlId || firstImdbId([...(node ? [nodeImdbId(node)] : []), ...page.imdbHrefs]);
   const ogTitle = page.ogTitle?.replace(/\s*\|.*$/, '').replace(/\s*\(\d{4}\)\s*$/, '').trim();
   const title = node?.name || ogTitle || null;
   if (!imdbId && !title) return null;
-  return { type: nodes.some((n) => hasType(n, 'TVSeries')) ? 'series' : 'movie', imdbId, title };
+  const series = node ? hasType(node, 'TVSeries') : /\(TV (Mini )?Series\b/.test(page.docTitle);
+  return { type: series ? 'series' : 'movie', imdbId, title };
 }
 
 function stremioUrl(film) {

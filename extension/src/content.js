@@ -4,6 +4,7 @@ function readPage() {
     jsonLd: [...document.querySelectorAll('script[type="application/ld+json"]')].map((s) => s.textContent),
     imdbHrefs: [...document.querySelectorAll('a[href*="imdb.com/title/tt"]')].map((a) => a.href),
     ogTitle: document.querySelector('meta[property="og:title"]')?.content ?? null,
+    docTitle: document.title,
   };
 }
 
@@ -27,7 +28,9 @@ if (extractFilm(readPage())) {
   root.querySelector('button').addEventListener('click', () => {
     // Re-read on click: IMDb swaps titles without reloading, so load-time data can be stale.
     const film = extractFilm(readPage());
+    // Nothing to open after a client-side jump to a non-film page, so drop the button rather than leave it dead.
     if (film) location.assign(stremioUrl(film));
+    else host.remove();
   });
   document.body.append(host);
 }
