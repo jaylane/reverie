@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Reverie: Stream it",
+  "version": "0.1.0",
+  "description": "Adds a Stream it button to IMDb, Rotten Tomatoes and TMDB film pages that opens the film in Stremio.",
+  "content_scripts": [{
+    "matches": [
+      "https://www.imdb.com/title/*",
+      "https://www.rottentomatoes.com/m/*",
+      "https://www.themoviedb.org/movie/*"
+    ],
+    "js": ["src/stremio-link.js", "src/content.js"],
+    "run_at": "document_idle"
+  }]
+}
