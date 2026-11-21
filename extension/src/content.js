@@ -31,10 +31,11 @@ if (extractFilm(readPage())) {
       img { display: block; width: 100%; height: 100%; transition: transform 0.12s; }
       button:hover img { transform: scale(1.08); }
       button:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
-      /* Instant tooltip: the native title tooltip waits about a second. */
+      /* Instant tooltip: the native title tooltip waits about a second. It sits beside the icon
+         because Rotten Tomatoes' title element clips anything above or below its line. */
       button::after {
         content: attr(aria-label); position: absolute; z-index: 2147483647;
-        top: calc(100% + 6px); left: 50%; transform: translateX(-50%);
+        top: 50%; left: calc(100% + 8px); transform: translateY(-50%);
         padding: 6px 10px; border-radius: 6px; background: #111; color: #fff; white-space: nowrap;
         font: 500 13px/1.2 system-ui, sans-serif; letter-spacing: normal; text-transform: none;
         opacity: 0; pointer-events: none; transition: opacity 0.12s;
