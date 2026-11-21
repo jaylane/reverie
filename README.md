@@ -19,7 +19,7 @@ Requires Chrome and the Stremio desktop app (macOS is the tested platform).
 1. Clone the repo.
 2. Open `chrome://extensions` and turn on **Developer mode**.
 3. Click **Load unpacked** and choose the `extension/` folder.
-4. Open a film page, for example https://www.imdb.com/title/tt0133093/, and click the Stremio icon beside the title.
+4. Open a film page, for example https://www.imdb.com/title/tt0133093/, and click the Reverie icon beside the title.
 
 The first click asks "Open Stremio?". Tick **Always allow** for that site to skip the prompt next time.
 
@@ -43,4 +43,4 @@ The design and the follow-up list (Windows and Linux, a Stremio Web fallback, mo
 
 ## Trademark
 
-Stremio and its icon belong to their owners. This project is not affiliated with or endorsed by Stremio.
+Stremio is a trademark of its owners. This project is not affiliated with or endorsed by Stremio. The extension's icon is original; its source is `assets/icon.svg`.

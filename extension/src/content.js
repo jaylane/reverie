@@ -42,7 +42,7 @@ if (extractFilm(readPage())) {
       button:hover::after, button:focus-visible::after { opacity: 1; }
       :host([data-floating]) button::after { top: auto; bottom: calc(100% + 6px); left: auto; right: 0; transform: none; }
     </style>
-    <button type="button" aria-label="Stream it with Stremio"><img src="${chrome.runtime.getURL('icons/stremio-64.png')}" alt=""></button>`;
+    <button type="button" aria-label="Stream it with Stremio"><img src="${chrome.runtime.getURL('icons/icon-128.png')}" alt=""></button>`;
 
   const place = () => {
     const title = document.querySelector(TITLE);
