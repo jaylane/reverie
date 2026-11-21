@@ -1,0 +1,6 @@
+node_modules/
+.remember/
+.agents/
+.claude/
+.hermes/
+.superpowers/
